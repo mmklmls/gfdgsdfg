@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Попались!</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            overflow: hidden;
+            font-family: 'Arial Black', sans-serif;
+            position: relative;
+        }
+        
+        .text {
+            font-size: 100px;
+            font-weight: 900;
+            color: #ff0000;
+            text-shadow: 
+                0 0 15px #8b0000,
+                0 0 30px #8b0000,
+                0 0 45px #8b0000;
+            animation: 
+                blink 0.8s infinite alternate,
+                shake 0.3s infinite alternate,
+                bloodify 10s forwards;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Анимации */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-5px, 5px) rotate(-1deg); }
+            50% { transform: translate(3px, -3px) rotate(1deg); }
+            75% { transform: translate(4px, 2px) rotate(0deg); }
+            100% { transform: translate(-2px, -4px) rotate(-1deg); }
+        }
+
+        @keyframes bloodify {
+            0% { text-shadow: 0 0 15px #8b0000; }
+            100% { 
+                color: #8b0000;
+                text-shadow: 
+                    0 0 5px #500000,
+                    0 0 10px #500000,
+                    0 0 20px #500000;
+                filter: blur(0.5px);
+            }
+        }
+
+        /* Трещины на экране */
+        .crack {
+            position: absolute;
+            background: linear-gradient(45deg, transparent 45%, #8b0000 45.5%, transparent 46%);
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0;
+            animation: crack-appear 15s forwards;
+        }
+
+        @keyframes crack-appear {
+            0% { opacity: 0; }
+            50% { opacity: 0.3; }
+            100% { 
+                opacity: 0.7;
+                background-size: 200px 200px;
+            }
+        }
+
+        /* Кровавые капли */
+        .blood {
+            position: absolute;
+            background: radial-gradient(circle, #8b0000 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            animation: blood-drip 5s infinite;
+        }
+
+        @keyframes blood-drip {
+            0% { transform: translateY(-100px); opacity: 0; }
+            50% { opacity: 0.7; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* Затемнение экрана */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="crack"></div>
+    <div class="text">Попались!</div>
+
+    <script>
+        // Создаем кровавые капли
+        function createBlood() {
+            const blood = document.createElement('div');
+            blood.classList.add('blood');
+            blood.style.width = Math.random() * 30 + 10 + 'px';
+            blood.style.height = blood.style.width;
+            blood.style.left = Math.random() * 100 + 'vw';
+            blood.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(blood);
+        }
+
+        // Создаем трещины
+        function createCracks() {
+            const cracks = document.querySelector('.crack');
+            cracks.style.background = `
+                linear-gradient(${Math.random() * 360}deg, 
+                transparent 45%, #8b0000 45.5%, transparent 46%),
+                linear-gradient(${Math.random() * 360}deg, 
+                transparent 45%, #8b0000 45.5%, transparent 46%)
+            `;
+        }
+
+        // Запускаем эффекты
+        setInterval(createBlood, 500);
+        setTimeout(createCracks, 3000);
+    </script>
+</body>
+</html>
